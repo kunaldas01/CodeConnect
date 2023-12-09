@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Connect</title>
+    <link rel="icon" type="image/x-icon" href="assets/images/programming.png">
+    <link rel="stylesheet" href="css/home.css" />
+</head>
+
+<body onload="deleteAllAlerts()">
+    <header id="header" class="<%= headerVisibility %>">
+        <nav class="nav-bar">
+            <div class="left-section">
+                <h2 class="heading">Code Connect</h2>
+            </div>
+
+            <div class="right-section">
+                <a href="/theme" class="theme-btn"><img src="assets/images/moon.png" alt="sun-moon" /></a>
+                <button class="profile-btn">
+                    <img id="profile-btn" src="assets/images/avatars/<%= userDetails.profile %>.png"
+                        alt="profile-picture">
+                </button>
+            </div>
+        </nav>
+    </header>
+    <main id="main-section" class="<%= mainVisibility %>">
+        <div class="join-box">
+            <button id="createProject"><img src="assets/images/plus.png" alt="plus"> Create Project</button>
+            <button id="joinProject"><img src="assets/images/join.png" alt="join"> Join Project</button>
+        </div>
+        <div class="main-box">
+            <% if(userDetails.projects.length!=0){ %>
+            <div class="content-box">
+                <h2>Projects Joined</h2>
+                <div class="project-list">
+                    <% userDetails.projects.forEach((project)=>{ %>
+
+                    <div class="project-box">
+
+                        <a>
+                            <img class="project-menu" id="bt-<%= project.project_id %>" src="assets/images/dots.png"
+                                alt="dots" onclick="projectMenu('<%= project.project_id %>')">
+                        </a>
+
+                        <div class="menu-items" id="pid-<%= project.project_id %>">
+
+                            <button onclick="exitProject('<%= project.project_id %>', '<%= project.project_name %>')">
+                                Exit Project
+                            </button>
+                            <button
+                                onclick="deleteProject('<%= userDetails.name %>', '<%= userDetails.email %>', '<%= project.project_id %>', '<%= project.project_name %>', '<%= project.project_admin %>')">
+                                Delete Project
+                            </button>
+                        </div>
+
+                        <a class="item" href="/main/<%= project.project_id %>?useremail=<%= userDetails.email %>">
+                            <%= project.project_name %>
+                        </a>
+
+                    </div>
+
+                    <% }) %>
+                </div>
+            </div>
+
+            <% }else{ %>
+            <div class="content-box" style="height: 100%; justify-content: center;">
+                <h2>Welcome to Code Connect</h2>
+                <p>Create a new project or join one to get started !</p>
+            </div>
+            <% } %>
+        </div>
+    </main>
+
+    <!-- Profile Drop Down Menu -->
+    <div id="profile-menu" class="profile profileDropdown hidden">
+        <div class="profile userData">
+            <img id="profile-image" class="profile" src="assets/images/avatars/<%= userDetails.profile %>.png"
+                alt="profile-image">
+            <p id="userName" class="profile"><%= userDetails.name %></p>
+            <p id="userEmail" class="profile"><%= userDetails.email %></p>
+        </div>
+        <div class="profile alterData">
+            <a id="edit-profile">
+                <img src="assets/images/edit-profile.png" alt="edit-profile">EditProfile
+            </a>
+            <a href="/">
+                <img src="assets/images/logout.png" alt="logout">Logout
+            </a>
+        </div>
+    </div>
+
+    <!-- Edit Form -->
+    <div class="edit-form <%= updateUserFormVisibility %>">
+        <div class="close-box">
+            <img id="close-edit" src="assets/images/close.png" alt="close">
+        </div>
+        <form action="/updateDetails" method="post">
+            <p class="alertMessage updateUserAlertMessage"><%= alertMessage %></p>
+            <input type="hidden" name="userInfo" value="<%= userDetails %>" />
+            <div class="profile-selector">
+                <div class="profile-selector-btn" value="defaultUser">
+                    <img id="defaultUser" src="assets/images/avatars/<%= userDetails.profile %>.png" alt="defaultUser">
+                    <img id="photo-camera" src="assets/images/photo-camera.png" alt="photo-camera">
+                </div>
+                <p>Choose Profile</p>
+                <div class="profile-menu">
+                    <div id="defaultProfile">Default</div>
+                    <div id="chooseProfile">Choose Profile</div>
+                </div>
+                <input type="hidden" name="profile" value="<%= userDetails.profile %>" id="profile" />
+                <input type="hidden" name="oldname" value="<%= userDetails.name %>" id="oldname" />
+            </div>
+
+            <div class="form-control">
+                <label for="username">USERNAME</label>
+                <input type="hidden" name="currName" value="<%= userDetails.name %>">
+                <input type="text" name="username" id="username" value="<%= userDetails.name %>" placeholder="Name"
+                    required autocomplete="name" />
+            </div>
+            <div class="form-control">
+                <label>EMAIL ADDRESS</label>
+                <input type="hidden" id="useremail" name="useremail" value="<%= userDetails.email %>">
+                <div id="email">
+                    <p><%= userDetails.email %></p>
+                </div>
+            </div>
+            <div class="form-control">
+                <label for="password">PASSWORD</label>
+                <input type="text" name="password" id="password" value="<%= userDetails.password %>"
+                    placeholder="Password" onChange="onChange()" required />
+            </div>
+
+            <button type="submit" class="save-btn">Save</button>
+        </form>
+    </div>
+
+    <!-- Choose Avatar Form -->
+    <div class="choose-avatar">
+        <div class="top-section">
+            <img id="closeBtn" src="assets/images/close.png" alt="close">
+        </div>
+        <div class="bottom-section">
+            <div class="avatar-container" id="1" onclick="selectProfile(this.id)">
+                <img src="assets/images/avatars/1.png" alt="avatar1">
+            </div>
+            <div class="avatar-container" id="2" onclick="selectProfile(this.id)">
+                <img src="assets/images/avatars/2.png" alt="avatar2">
+            </div>
+            <div class="avatar-container" id="3" onclick="selectProfile(this.id)">
+                <img src="assets/images/avatars/3.png" alt="avatar3">
+            </div>
+            <div class="avatar-container" id="4" onclick="selectProfile(this.id)">
+                <img src="assets/images/avatars/4.png" alt="avatar4">
+            </div>
+            <div class="avatar-container" id="5" onclick="selectProfile(this.id)">
+                <img src="assets/images/avatars/5.png" alt="avatar5">
+            </div>
+            <div class="avatar-container" id="6" onclick="selectProfile(this.id)">
+                <img src="assets/images/avatars/6.png" alt="avatar6">
+            </div>
+            <div class="avatar-container" id="7" onclick="selectProfile(this.id)">
+                <img src="assets/images/avatars/7.png" alt="avatar7">
+            </div>
+            <div class="avatar-container" id="8" onclick="selectProfile(this.id)">
+                <img src="assets/images/avatars/8.png" alt="avatar8">
+            </div>
+            <div class="avatar-container" id="9" onclick="selectProfile(this.id)">
+                <img src="assets/images/avatars/9.png" alt="avatar9">
+            </div>
+        </div>
+    </div>
+
+    <!-- Create Project Window -->
+    <div id="create-new" class="project-window <%= createFormVisibility %>">
+        <div class="window-title">
+            <h2>Create Project</h2>
+        </div>
+        <form action="/newProject" method="post">
+            <p class="alertMessage createAlertMessage"><%= alertMessage %></p>
+            <div class="form-control">
+                <label for="project-name">Project Name</label>
+                <input type="text" name="pName" id="project-name" placeholder="Enter project name" required />
+            </div>
+            <div class="form-control">
+                <label for="project-id">Project Id</label>
+                <div class="project-id-form">
+                    <input type="text" name="pId" id="project-id" value="" placeholder="Enter project id" required />
+                    <a id="copy-projectId" onclick="myFunction()" onmouseout="outFunc()">
+                        <span class="tooltiptext" id="myTooltip">Copy to clipboard</span>
+                        <img src="assets/images/copy.png" alt="copy">
+                    </a>
+                </div>
+                <p></p><a id="generate-projectId">Regenerate</a> project id</p>
+            </div>
+            <div class="add-people-box">
+                <select name="pLang" id="lang-selection">
+                    <option value="c" selected>C</option>
+                    <option value="cpp">C++</option>
+                    <option value="java">Java</option>
+                    <option value="py">Python</option>
+                </select>
+            </div>
+            <div class="form-btn">
+                <a id="cancel-button">Cancel</a>
+                <input type="hidden" name="useremail" value="<%= userDetails.email %>">
+                <button type="submit" id="create-btn">Create</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Join Project Window -->
+    <div id="join-exist" class="project-window <%= joinFormVisibility %>">
+        <div class="window-title">
+            <h2>Join Project</h2>
+        </div>
+        <form action="/joinProject" method="post">
+            <p class="alertMessage joinAlertMessage"><%= alertMessage %></p>
+            <div class="form-control">
+                <label for="jproject-name">Project Name</label>
+                <input type="text" name="pName" id="jproject-name" placeholder="Enter project name" required />
+            </div>
+            <div class="form-control">
+                <label for="jproject-id">Project Id</label>
+                <input type="text" name="pId" id="jproject-id" placeholder="Enter project id" required />
+            </div>
+            <div class="form-btn">
+                <input type="hidden" name="useremail" value="<%= userDetails.email %>">
+                <a id="cancel-join">Cancel</a>
+                <button type="submit" id="join-btn">Join</button>
+            </div>
+        </form>
+    </div>
+
+
+    <!-- Exit Project -->
+    <div class="leaveForm">
+        <div class="exit-message">
+            <img src="assets/images/logout.png" alt="exit">
+            <p id="exit-alert"></p>
+        </div>
+        <div class="exitForm-btns">
+            <button id="cancel-exit">Cancel</button>
+            <form action="/exitProject/" method="post">
+                <input type="hidden" name="useremail" value="<%= userDetails.email %>">
+                <input id="exitProjectName" type="hidden" name="project_name" value="">
+                <button id="exitProject" type="submit" name="project_id" value="">Exit</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Don't have Delete Project access-->
+    <div class="dhdaForm">
+        <div class="dhdaMessage">
+            <img src="assets/images/access-denied.png" alt="access-denied">
+            <p id="dhdaAlert"></p>
+        </div>
+        <button id="dhdaClose">Close</button>
+    </div>
+
+    <!-- Delete  Project -->
+    <div class="deleteForm">
+        <div class="cancelDelete">
+            <img src="assets/images/close.png" alt="close" onclick="closeDelete()">
+        </div>
+        <div class="deleteMessage">
+            <img src="assets/images/delete.png" alt="delete">
+            <p id="deleteAlert"></p>
+        </div>
+        <div class="confirmDelete">
+            <p id="confirmAlert"></p>
+            <input id="confirmText" type="text" name="confirmText" value="" required>
+            <form action="/deleteProject" method="post">
+                <input type="hidden" name="useremail" value="<%= userDetails.email %>">
+                <input type="hidden" id="deleteProjectName" name="deleteProjectName" value="">
+                <button class="deleteProjectBtn" id="deleteProjectId" type="submit" name="deleteProjectId" value=""
+                    disabled>
+                    Delete this project
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Project Exit or Delete Alert -->
+    <p class="pedAlert"><%= alterProjectMessage %></p>
+
+    <script src="js/home.js"></script>
+</body>
+
+</html>

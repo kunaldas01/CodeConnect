@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/codemirror-5.65.15/lib/codemirror.css">
+    <link rel="stylesheet" href="/codemirror-5.65.15/theme/dracula.css">
+    <link rel="stylesheet" href="/css/main.css" />
+    <title>Code Connect</title>
+    <link rel="icon" type="image/x-icon" href="/assets/images/programming.png">
+</head>
+
+<body>
+    <!-- For Socket Connection -->
+    <input type="hidden" id="user-profile" value="<%= userDetails.profile %>">
+    <input type="hidden" id="user-name" value="<%= userDetails.name %>">
+    <input type="hidden" id="user-email" value="<%= userDetails.email %>">
+    <input type="hidden" id="project-id" value="<%= projectDetails.projectId %>">
+    <input type="hidden" id="project-lang" value="<%= projectDetails.projectLang %>">
+    <input type="hidden" id="project-admin" value="<%= projectDetails.adminName %>">
+    <input type="hidden" name="forkContent" id="forkContent" value="<%= projectDetails.projectContent %>">
+
+    <header class="header">
+        <nav class="nav-bar">
+            <div class="left-section">
+                <button class="sidebarBtn"><img src="/assets/images/menu.png" alt="menu"></button>
+                <div class="project-heading">
+                    <img src="/assets/images/room.png" alt="room">
+                    <h2 id="project-title"><%= projectDetails.projectName%></h2>
+                </div>
+            </div>
+            <div>
+                <h2 id="heading">Code Connect</h2>
+            </div>
+            <div class="right-section">
+                <a href="/exitRoom/<%= userDetails.email %>" id="leave-btn" class="exit-btn"><img
+                        src="/assets/images/exit.png" alt="exit"> Leave
+                    Room</a>
+                <a href="/theme" class="theme-btn"><img src="/assets/images/moon.png" alt="sun-moon" /></a>
+                <button class="profile-btn"><img id="profile-btn"
+                        src="/assets/images/avatars/<%= userDetails.profile %>.png" alt="profile-picture"></button>
+            </div>
+        </nav>
+    </header>
+    <main class="main-section">
+        <!-- SideBar -->
+        <div class="sidebar-menu">
+            <button id="fileBtn"><img src="/assets/images/files.png" alt="files"></button>
+            <button id="peopleBtn"><img src="/assets/images/people.png" alt="people"></button>
+            <button id="chatBtn" class="selected"><img src="/assets/images/chat.png" alt="chat"></button>
+        </div>
+        <div class="sidebar">
+
+            <!-- Chat -->
+            <div class="sidebar-content" id="message">
+                <div class="chat-messages"> </div>
+                <div class="chat-form-container">
+                    <form id="chat-form">
+                        <input id="msg" type="text" placeholder="Enter Message" required autocomplete="off" />
+                        <button class="sendChatBtn"><img src="/assets/images/paper-plane.png"
+                                alt="paper-plane"></button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Room Members  -->
+            <div class="sidebar-contentII hidden" id="memberSection">
+                <div class="active-user">
+                    <img src="/assets/images/active-user.png" alt="active-user">
+                    <h2>Project Members</h2>
+                </div>
+
+                <div class="projectMembers">
+                    <ul class="memberList"></ul>
+                </div>
+            </div>
+
+            <!-- Files -->
+            <div class="sidebar-contentIII hidden" id="fileSection">
+                <div class="createSection">
+                    <button id="createFileBtn"><img src="/assets/images/add.png" alt="add"></button>
+                </div>
+                <div class="adminSection">
+                    <img src="/assets/images/admin.png" alt="admin">
+                    <button id="adminFile"
+                        onclick="openFile('<%= projectDetails.projectName %>', '<%= projectDetails.projectId %>', 'admin')"><%= projectDetails.projectName %>&nbsp;<span>(<%= projectDetails.adminName %>)</span></button>
+                </div>
+
+                <div class="memberFiles"></div>
+            </div>
+
+        </div>
+
+        <!-- Editor Section -->
+        <div class="editorSection">
+            <div class="editor-menu">
+                <div class="editor-left-section">
+                    <select name="lang-selector" id="lang-selector">
+                        <option value="c">C</option>
+                        <option value="cpp">C++</option>
+                        <option value="java">Java</option>
+                        <option value="py">Python</option>
+                    </select>
+                    <button class="markComplete realMarkComplete">Mark as complete</button>
+                    <button class="reject realReject">Reject</button>
+                    <button class="approve realApprove">Approve</button>
+                </div>
+                <div class="editor-mid-section">
+                    <h2 id="fileHeading"></h2>
+                </div>
+                <div class="editor-right-section">
+                    <button class="saveBtn"><img src="/assets/images/save.png" alt="save"></button>
+                    <button class="downloadBtn"><img src="/assets/images/download.png" alt="download"></button>
+                    <button class="runWindowBtn"><img src="/assets/images/play.png" alt="play"></button>
+                </div>
+            </div>
+            <div class="textarea-container">
+                <textarea name="editor" id="editor" cols="1000"
+                    rows="1000"><%= projectDetails.projectContent %></textarea>
+            </div>
+        </div>
+
+        <!-- Run window -->
+        <div class="runWindow">
+            <button id="runBtn">Run Code</button>
+            <div class="inputSection">
+                <textarea name="input" id="input"></textarea>
+            </div>
+            <div class="outputSection">
+                <p id="output"></p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Create File Form -->
+    <div class="createFileForm">
+        <div class="createTop">
+            <div></div>
+            <h2>Create File</h2>
+            <button id="closeCreateFile"><img src="/assets/images/close.png" alt="close"></button>
+        </div>
+        <div class="createForm">
+            <form action="javascript:void(0);">
+                <div class="createInput">
+                    <label for="fileName">Enter File Name</label>
+                    <input type="text" name="fileName" id="fileName" placeholder="File Name" required />
+
+                    <select name="lang-selection" id="lang-selection" required>
+                        <option value="c" selected>C</option>
+                        <option value="cpp">C++</option>
+                        <option value="java">Java</option>
+                        <option value="py">Python</option>
+                    </select>
+
+                    <div>
+                        <input type="checkbox" name="fork" id="fork" value="">
+                        <label for="fork">Copy data from root document</label>
+                    </div>
+                </div>
+                <div class="createBtn">
+                    <input type="button" id="createFile" value="Create File">
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Mark Complete Form -->
+    <div class="markCompleteForm">
+        <div class="alert-message">
+            <img src="/assets/images/complete.png" alt="complete">
+            <p id="complete-alert"></p>
+        </div>
+        <div class="completeFormBtns">
+            <button id="cancel-complete">Cancel</button>
+            <button id="confirm-complete">Confirm</button>
+        </div>
+    </div>
+
+    <!-- Approve Form -->
+    <div class="approveForm">
+        <div class="alert-message">
+            <img src="/assets/images/approve.png" alt="approve">
+            <p id="approve-alert"></p>
+        </div>
+        <div class="approveFormBtns">
+            <button id="cancel-approve">Cancel</button>
+            <button id="confirm-approve">Confirm</button>
+        </div>
+    </div>
+
+    <!-- Reject Form -->
+    <div class="rejectForm">
+        <div class="alert-message">
+            <img src="/assets/images/reject.png" alt="reject">
+            <p id="reject-alert"></p>
+        </div>
+        <div class="approveFormBtns">
+            <button id="cancel-reject">Cancel</button>
+            <button id="confirm-reject">Confirm</button>
+        </div>
+    </div>
+
+    <!-- Profile Drop Down Menu -->
+    <div id="profile-menu" class="profile profileDropdown hidden">
+        <div class="profile userData">
+            <img id="profile-image" class="profile" src="/assets/images/avatars/<%= userDetails.profile %>.png"
+                alt="profile-image">
+            <p id="userName" class="profile"><%= userDetails.name %></p>
+            <p id="userEmail" class="profile"><%= userDetails.email %></p>
+        </div>
+        <div class="profile alterData">
+            <a id="edit-profile">
+                <img src="/assets/images/edit-profile.png" alt="edit-profile">EditProfile
+            </a>
+            <a href="/">
+                <img src="/assets/images/logout.png" alt="logout">Logout
+            </a>
+        </div>
+    </div>
+
+    <!-- Edit Form -->
+    <div class="edit-form <%= updateUserFormVisibility %>">
+        <div class="close-box">
+            <img id="close-edit" src="/assets/images/close.png" alt="close">
+        </div>
+        <form>
+            <p class="alertMessage updateUserAlertMessage"><%= alertMessage %></p>
+            <div class="profile-selector">
+                <div class="profile-selector-btn" value="defaultUser">
+                    <img id="defaultUser" src="/assets/images/avatars/<%= userDetails.profile %>.png" alt="defaultUser">
+                    <img id="photo-camera" src="/assets/images/photo-camera.png" alt="photo-camera">
+                </div>
+                <p>Choose Profile</p>
+                <div class="profile-menu">
+                    <div id="defaultProfile">Default</div>
+                    <div id="chooseProfile">Choose Profile</div>
+                </div>
+                <input type="hidden" name="profile" value="<%= userDetails.profile %>" id="profile" />
+                <input type="hidden" name="oldname" id="oldname" value="<%= userDetails.name %>">
+            </div>
+
+            <div class="form-control">
+                <label for="username">USERNAME</label>
+                <input type="text" name="username" id="username" value="<%= userDetails.name %>" placeholder="Name"
+                    required autocomplete="name" />
+            </div>
+
+            <div class="form-control">
+                <label>EMAIL ADDRESS</label>
+                <input type="hidden" id="useremail" name="useremail" value="<%= userDetails.email %>">
+                <div id="email">
+                    <p><%= userDetails.email %></p>
+                </div>
+            </div>
+            <div class="form-control">
+                <label for="password">PASSWORD</label>
+                <input type="text" name="password" id="password" value="<%= userDetails.password %>"
+                    placeholder="Password" onChange="onChange()" required />
+            </div>
+
+            <button class="save-btn">Save</button>
+        </form>
+    </div>
+
+    <!-- Choose Avatar Form -->
+    <div class="choose-avatar">
+        <div class="top-section">
+            <img id="closeBtn" src="/assets/images/close.png" alt="close">
+        </div>
+        <div class="bottom-section">
+            <div class="avatar-container" id="1" onclick="selectProfile(this.id)">
+                <img src="/assets/images/avatars/1.png" alt="avatar1">
+            </div>
+            <div class="avatar-container" id="2" onclick="selectProfile(this.id)">
+                <img src="/assets/images/avatars/2.png" alt="avatar2">
+            </div>
+            <div class="avatar-container" id="3" onclick="selectProfile(this.id)">
+                <img src="/assets/images/avatars/3.png" alt="avatar3">
+            </div>
+            <div class="avatar-container" id="4" onclick="selectProfile(this.id)">
+                <img src="/assets/images/avatars/4.png" alt="avatar4">
+            </div>
+            <div class="avatar-container" id="5" onclick="selectProfile(this.id)">
+                <img src="/assets/images/avatars/5.png" alt="avatar5">
+            </div>
+            <div class="avatar-container" id="6" onclick="selectProfile(this.id)">
+                <img src="/assets/images/avatars/6.png" alt="avatar6">
+            </div>
+            <div class="avatar-container" id="7" onclick="selectProfile(this.id)">
+                <img src="/assets/images/avatars/7.png" alt="avatar7">
+            </div>
+            <div class="avatar-container" id="8" onclick="selectProfile(this.id)">
+                <img src="/assets/images/avatars/8.png" alt="avatar8">
+            </div>
+            <div class="avatar-container" id="9" onclick="selectProfile(this.id)">
+                <img src="/assets/images/avatars/9.png" alt="avatar9">
+            </div>
+        </div>
+    </div>
+
+    <!-- Alert Message -->
+    <p class="pedAlert"></p>
+
+    <footer>
+        <p>Made by Kunal & Manish</p>
+    </footer>
+
+    <!-- Socket.io -->
+    <script src="/socket.io/socket.io.js"></script>
+
+    <!-- Code Mirror -->
+    <script src="/codemirror-5.65.15/lib/codemirror.js"></script>
+
+    <!-- Modes -->
+    <script src="/codemirror-5.65.15/mode/clike/clike.js"></script>
+    <script src="/codemirror-5.65.15/mode/python/python.js"></script>
+    <script src="/codemirror-5.65.15/mode/javascript/javascript.js"></script>
+    <script src="/codemirror-5.65.15/mode/shell/shell.js"></script>
+
+    <!-- Addons -->
+    <script src="/codemirror-5.65.15/addon/edit/closebrackets.js"></script>
+
+    <!-- Native -->
+    <script src="/js/main.js"></script>
+    <script src="/js/editor.js"></script>
+</body>
+
+</html>

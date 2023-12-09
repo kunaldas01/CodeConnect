@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Connect</title>
+    <link rel="icon" type="image/x-icon" href="assets/images/programming.png">
+    <link rel="stylesheet" href="css/login.css">
+</head>
+
+<body>
+    <!-- Login -->
+    <div id="login-form" class="join-container <%= login %>">
+        <header class="join-header">
+            <img src="assets/images/programming.png" alt="programming">
+            <h1>Code Connect</h1>
+        </header>
+        <main class="join-main">
+            <form action="/login" method="post">
+                <p class="alert-message login-alert-message"><%= message %></p>
+                <div class="form-control">
+                    <label for="lemail">EMAIL ADDRESS</label>
+                    <input type="email" name="email" id="lemail" placeholder="example@email.com" required
+                        autocomplete="email" />
+                </div>
+                <div class="form-control">
+                    <label for="lpassword">PASSWORD</label>
+                    <input type="password" name="password" id="lpassword" placeholder="Password" required />
+                </div>
+                <button type="submit" class="login-btn">Login</button>
+            </form>
+            <p class="switch-form">Don't have an account ? <a id="signup">Signup</a></p>
+        </main>
+    </div>
+
+    <!-- Signup -->
+    <div id="signup-form" class="join-container <%= signup %>">
+        <header class="join-header">
+            <img src="assets/images/programming.png" alt="programming">
+            <h1>Code Connect</h1>
+        </header>
+        <main class="join-main">
+            <form action="/signup" method="post">
+                <div class="profile-selector">
+                    <div class="profile-selector-btn" value="defaultUser">
+                        <img id="defaultUser" src="assets/images/avatars/defaultUser.png" alt="defaultUser">
+                        <img id="photo-camera" src="assets/images/photo-camera.png" alt="photo-camera">
+                    </div>
+                    <p>Choose Profile</p>
+                    <div class="profile-menu">
+                        <div id="defaultProfile">Default</div>
+                        <div id="chooseProfile">Choose Profile</div>
+                    </div>
+                    <input type="hidden" name="profile" value="defaultUser" id="profile" />
+                </div>
+                <p class="alert-message signup-alert-message"><%= message %></p>
+                <div class="form-control">
+                    <label for="username">USERNAME</label>
+                    <input type="text" name="username" id="username" placeholder="Name" required />
+                </div>
+                <div class="form-control">
+                    <label for="email">EMAIL ADDRESS</label>
+                    <input type="email" name="email" id="email" placeholder="example@email.com" required
+                        autocomplete="email" />
+                </div>
+                <div class="form-control">
+                    <label for="password">PASSWORD</label>
+                    <input type="password" name="password" id="password" placeholder="Password" onChange="onChange()"
+                        required />
+                </div>
+                <div class="form-control">
+                    <label for="confirm-password">CONFIRM PASSWORD</label>
+                    <input type="password" name="confirmPassword" id="confirm-password" placeholder="Confirm Password"
+                        onChange="onChange()" required />
+                </div>
+                <button type="submit" class="login-btn">Sign Up</button>
+            </form>
+            <p class="switch-form">Already have an account ? <a id="login">Login</a></p>
+        </main>
+    </div>
+
+    <div class="choose-avatar">
+        <div class="top-section">
+            <img id="closeBtn" src="assets/images/close.png" alt="close">
+        </div>
+        <div class="bottom-section">
+            <div class="avatar-container" id="1" onclick="selectProfile(this.id)">
+                <img src="assets/images/avatars/1.png" alt="avatar1">
+            </div>
+            <div class="avatar-container" id="2" onclick="selectProfile(this.id)">
+                <img src="assets/images/avatars/2.png" alt="avatar2">
+            </div>
+            <div class="avatar-container" id="3" onclick="selectProfile(this.id)">
+                <img src="assets/images/avatars/3.png" alt="avatar3">
+            </div>
+            <div class="avatar-container" id="4" onclick="selectProfile(this.id)">
+                <img src="assets/images/avatars/4.png" alt="avatar4">
+            </div>
+            <div class="avatar-container" id="5" onclick="selectProfile(this.id)">
+                <img src="assets/images/avatars/5.png" alt="avatar5">
+            </div>
+            <div class="avatar-container" id="6" onclick="selectProfile(this.id)">
+                <img src="assets/images/avatars/6.png" alt="avatar6">
+            </div>
+            <div class="avatar-container" id="7" onclick="selectProfile(this.id)">
+                <img src="assets/images/avatars/7.png" alt="avatar7">
+            </div>
+            <div class="avatar-container" id="8" onclick="selectProfile(this.id)">
+                <img src="assets/images/avatars/8.png" alt="avatar8">
+            </div>
+            <div class="avatar-container" id="9" onclick="selectProfile(this.id)">
+                <img src="assets/images/avatars/9.png" alt="avatar9">
+            </div>
+        </div>
+    </div>
+
+    <script src="js/login.js"></script>
+</body>
+
+</html>

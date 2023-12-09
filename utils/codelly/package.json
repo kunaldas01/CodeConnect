@@ -1,0 +1,39 @@
+{
+  "name": "codelly",
+  "version": "1.0.2",
+  "description": "codelly is a Node.JS module for online compiling. Based on Compilex.",
+  "main": "codelly.js",
+  "dependencies": {
+    "colors": "~0.6.2",
+    "cuid": "~1.2.4"
+  },
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/siimsek/codelly.git"
+  },
+  "keywords": [
+    "compiler",
+    "codelly",
+    "c",
+    "go",
+    "c#",
+    "swift",
+    "rust",
+    "c++",
+    "java",
+    "python",
+    "c#",
+    "vb",
+    "gcc",
+    "javac",
+    "csc",
+    "vbc"
+  ],
+  "author": "Muhammed Ali Şimşek <malisimsek17@gmail.com> (https://siimsek.github.io/)",
+  "license": "CC BY-NC-ND",
+  "bugs": {
+    "url": "https://github.com/siimsek/codelly/issues"
+  },
+  "homepage": "https://github.com/siimsek/codelly"
+}
