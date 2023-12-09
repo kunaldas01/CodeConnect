@@ -31,7 +31,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const botName = "Code Connect Bot";
 
 // Connect to mongoDB database
-mongoose.connect("mongodb://localhost:27017/codeconnectDB");
+// mongoose.connect("mongodb://localhost:27017/codeconnectDB");
+mongoose.connect("mongodb+srv://kunaldusk:thMXljqFOmUu9n2U@cluster0.tg40em3.mongodb.net/codeconnectDB");
 
 // Create Project Info Schema
 const projectInfoSchema = mongoose.Schema({
