@@ -1,5 +1,6 @@
 var exec = require('child_process').exec;
 var fs = require('fs');
+var colors = require('colors');
 var cuid = require('cuid');
 var cppModule = require('./cppModule.js');
 var javaModule = require('./javaModule.js');
