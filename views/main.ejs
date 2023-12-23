@@ -125,10 +125,20 @@
         <div class="runWindow">
             <button id="runBtn">Run Code</button>
             <div class="inputSection">
+                <div class="inputHead">
+                    <p>Input</p>
+                    <img id="clearInput" src="/assets/images/bin.png" alt="clear input">
+                </div>
                 <textarea name="input" id="input"></textarea>
             </div>
             <div class="outputSection">
-                <p id="output"></p>
+                <div class="outputHead">
+                    <p>Output</p>
+                    <img id="clearOutput" src="/assets/images/bin.png" alt="clear output">
+                </div>
+                <!-- <p></p> -->
+                <pre id="output"><code></code></pre>
+                <!-- <textarea name="output" id="output" cols="30" rows="10" disabled></textarea> -->
             </div>
         </div>
     </main>

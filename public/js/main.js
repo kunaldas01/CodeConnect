@@ -69,31 +69,59 @@ socket.on("activeMembers", (data) => {
 // Output message to DOM
 function outputMessage(message) {
   if (message.userName != "Code Connect Bot") {
-    const username = document.getElementById(`user-${message._id}`);
-    if (username) {
-      username.innerText = message.userName;
-      username.innerHTML += `<span>&nbsp;&nbsp;${message.time}</span>`;
+    const chat = document.querySelector(`#user-${message._id} > .meta`);
+    if (chat) {
+      chat.innerHTML = `${message.userName}<span>&nbsp;&nbsp;${message.time}</span>`;
       return;
     }
   }
+
+  // Parent container 
   const div = document.createElement('div');
+  if (message.userName != "Code Connect Bot") {
+    div.setAttribute("id", `user-${message._id}`);
+  }
   div.classList.add('message');
+
+  // User and time
   const p = document.createElement('p');
   p.classList.add('meta');
-
-  if (message.userName != "Code Connect Bot") {
-    p.setAttribute("id", `user-${message._id}`);
-  }
-
-  p.innerText = message.userName;
-  p.innerHTML += `<span>&nbsp;&nbsp;${message.time}</span>`;
+  p.innerHTML = `${message.userName}<span>&nbsp;&nbsp;${message.time}</span>`;
   div.appendChild(p);
+
+  // Text
   const para = document.createElement('p');
   para.classList.add('text');
   para.innerText = message.text;
   div.appendChild(para);
+
+  // Delete Button
+  if (message.userName != "Code Connect Bot") {
+    const button = document.createElement("button");
+    button.setAttribute("onclick", `deleteMessage("${message._id}")`);
+    button.innerHTML = `<img src="/assets/images/bin.png" alt="delete message" />`;
+    if (message.userName != document.querySelector("#user-name").value) {
+      button.disabled = true;
+      button.classList.add("disBtn");
+    }
+    div.appendChild(button);
+  }
+
   document.querySelector('.chat-messages').appendChild(div);
 }
+
+// Delete Message
+function deleteMessage(mId) {
+  socket.emit("deleteMessage", mId);
+}
+
+// Update after message is deleted
+socket.on("deleteMessage", (query) => {
+  if (query.user === document.querySelector("#user-name").value) {
+    sendAlert("Message deleted!");
+  }
+  document.getElementById(`user-${query.mId}`).remove();
+})
 
 // Add users to DOM
 function outputActiveMembers(projectMembers, activeMembers, oldUsername) {

@@ -8,7 +8,6 @@ exports.stats = false;
 
 exports.compileJava = function (envData, code, fn) {
 	//creating source file
-	// var dirname = cuid.slug();
 	var filename = envData.file;
 	path = './temp/';
 
@@ -21,12 +20,8 @@ exports.compileJava = function (envData, code, fn) {
 			if (exports.stats)
 				console.log('INFO: '.green + path + `/${filename}.java created`);
 
-			if (envData.OS === "windows") {
-				var command = "cd " + path + " & " + " javac " + filename + ".java";
-			}
-			else if (envData.OS === "linux") {
-				var command = "cd " + path + " && " + " javac " + filename + ".java";
-			}
+			var command = "cd " + path + " && " + " javac " + filename + ".java";
+			// }
 			exec(command, function (error, stdout, stderr) {
 				if (error) {
 					if (exports.stats)
@@ -36,12 +31,7 @@ exports.compileJava = function (envData, code, fn) {
 				}
 				else {
 					console.log("INFO: ".green + "compiled a java file");
-					if (envData.OS === "windows") {
-						var command = "cd " + path + " & java " + filename;
-					}
-					else if (envData.OS === "linux") {
-						var command = "cd " + path + " && java " + filename;
-					}
+					var command = "cd " + path + " && java " + filename;
 					exec(command, function (error, stdout, stderr) {
 						if (error) {
 
@@ -74,8 +64,6 @@ exports.compileJava = function (envData, code, fn) {
 
 
 exports.compileJavaWithInput = function (envData, code, input, fn) {
-	//creating source file
-	// var dirname = cuid.slug();
 	var filename = envData.file;
 	path = './temp/';
 
@@ -91,12 +79,7 @@ exports.compileJavaWithInput = function (envData, code, input, fn) {
 				if (err && exports.stats)
 					console.log('ERROR: '.red + err);
 				else {
-					if (envData.OS === "windows") {
-						var command = "cd " + path + " & " + " javac " + filename + ".java";
-					}
-					else if (envData.OS === "linux") {
-						var command = "cd " + path + " && " + " javac " + filename + ".java";
-					}
+					var command = "cd " + path + " && " + " javac " + filename + ".java";
 					exec(command, function (error, stdout, stderr) {
 						if (error) {
 							if (exports.stats)
@@ -106,12 +89,7 @@ exports.compileJavaWithInput = function (envData, code, input, fn) {
 						}
 						else {
 							console.log("INFO: ".green + "compiled a java file");
-							if (envData.OS === "windows") {
-								var command = "cd " + path + " & java " + filename + " < input.txt";
-							}
-							else if (envData.OS === "linux") {
-								var command = "cd " + path + " && java " + filename + " < input.txt";
-							}
+							var command = "cd " + path + " && java " + filename + " < input.txt";
 							exec(command, function (error, stdout, stderr) {
 								if (error) {
 

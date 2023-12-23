@@ -31,8 +31,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const botName = "Code Connect Bot";
 
 // Connect to mongoDB database
-// mongoose.connect("mongodb://localhost:27017/codeconnectDB");
-mongoose.connect("mongodb+srv://kunaldusk:thMXljqFOmUu9n2U@cluster0.tg40em3.mongodb.net/codeconnectDB");
+mongoose.connect("mongodb://localhost:27017/codeconnectDB");
+// mongoose.connect("mongodb+srv://kunaldusk:thMXljqFOmUu9n2U@cluster0.tg40em3.mongodb.net/codeconnectDB");
 
 // Create Project Info Schema
 const projectInfoSchema = mongoose.Schema({
@@ -154,7 +154,6 @@ app.get("/home", (req, res) => {
 app.get("/main/:projectId", (req, res) => {
     const pId = req.params.projectId;
     const currEmail = req.query.useremail;
-    // const updateForm = req.query.updateForm;
 
     Project.findOne({ projectId: pId })
         .then((foundProject) => {
@@ -438,7 +437,6 @@ app.post("/updateDetails", (req, res) => {
                             alterProjectAlert: "Userdetails updated successfully!",
                         });
 
-                        console.log("Hello");
                         res.redirect(`/home?${query}`);
                     })
             }
@@ -763,6 +761,21 @@ io.on("connection", (socket) => {
                 })
         })
 
+        // Delete File
+        socket.on("deleteFile", (fName) => {
+            Project.findOneAndUpdate({ projectId: user.projectId }, { $pull: { files: { fileName: fName } } })
+                .then(() => {
+                    const query = {
+                        user: user.userName,
+                        fName: fName,
+                    }
+                    io.to(user.projectId).emit('deleteFile', query);
+                })
+                .catch((err) => {
+                    console.log(err);
+                })
+        })
+
         // Get File
         socket.on('getFile', (details) => {
             Project.findOne({ projectId: details.pId })
@@ -806,21 +819,29 @@ io.on("connection", (socket) => {
             Project.findOne({ projectId: details.projectId })
                 .then((foundProject) => {
                     if (foundProject) {
+                        let fileData = "";
                         // In case of root file
                         if (foundProject.projectName === details.fileName) {
                             foundProject.projectLang = details.fileLang;
                             foundProject.projectContent = details.fileContent;
+                            fileData = {
+                                fileOwner: user.userName,
+                                fileName: details.fileName,
+                                fileLang: details.fileLang,
+                                fileContent: details.fileContent,
+                            }
                         }
                         // In case of other files
                         else {
                             const foundIndex = foundProject.files.findIndex(file => file.fileName === details.fileName);
                             foundProject.files[foundIndex].fileContent = details.fileContent;
                             foundProject.files[foundIndex].fileLang = details.fileLang;
+                            fileData = foundProject.files[foundIndex];
                         }
 
                         foundProject.save();
 
-                        socket.emit('filesaved', "File saved successfully");
+                        io.to(user.projectId).emit("filesaved", fileData);
                     }
                 })
                 .catch((err) => {
@@ -927,7 +948,7 @@ io.on("connection", (socket) => {
             // For C and Cpp
             if (lang === "c") {
                 if (!input) {
-                    var envData = { OS: "linux", cmd: "gcc" }; // ( uses gcc command to compile )
+                    var envData = { cmd: "gcc" }; // ( uses gcc command to compile )
                     compiler.compileCPP(envData, code, function (data) {
                         if (data.error) {
                             output = data.error;
@@ -939,7 +960,7 @@ io.on("connection", (socket) => {
                     });
                 }
                 else {
-                    var envData = { OS: "linux", cmd: "gcc" }; // ( uses gcc command to compile )
+                    var envData = { cmd: "gcc" }; // ( uses gcc command to compile )
                     compiler.compileCPPWithInput(envData, code, input, function (data) {
                         if (data.error) {
                             output = data.error;
@@ -954,7 +975,7 @@ io.on("connection", (socket) => {
 
             else if (lang === "cpp") {
                 if (!input) {
-                    var envData = { OS: "linux", cmd: "g++", options: { timeout: 100000 } }; // ( uses gcc command to compile )
+                    var envData = { cmd: "g++", options: { timeout: 100000 } }; // ( uses gcc command to compile )
                     compiler.compileCPP(envData, code, function (data) {
                         if (data.error) {
                             output = data.error;
@@ -966,7 +987,7 @@ io.on("connection", (socket) => {
                     });
                 }
                 else {
-                    var envData = { OS: "linux", cmd: "g++", options: { timeout: 100000 } }; // ( uses gcc command to compile )
+                    var envData = { cmd: "g++", options: { timeout: 100000 } }; // ( uses gcc command to compile )
                     compiler.compileCPPWithInput(envData, code, input, function (data) {
                         if (data.error) {
                             output = data.error;
@@ -982,7 +1003,7 @@ io.on("connection", (socket) => {
             // For Java
             else if (lang === "java") {
                 if (!input) {
-                    var envData = { OS: "linux", file: fName }; // (Support for Linux in Next version)
+                    var envData = { file: fName }; // (Support for Linux in Next version)
                     compiler.compileJava(envData, code, function (data) {
                         if (data.error) {
                             output = data.error;
@@ -994,7 +1015,7 @@ io.on("connection", (socket) => {
                     });
                 }
                 else {
-                    var envData = { OS: "linux", file: fName }; // (Support for Linux in Next version)
+                    var envData = { file: fName }; // (Support for Linux in Next version)
                     compiler.compileJavaWithInput(envData, code, input, function (data) {
                         if (data.error) {
                             output = data.error;
@@ -1062,11 +1083,22 @@ io.on("connection", (socket) => {
                 })
         });
 
+        // Delete Message
+        socket.on("deleteMessage", (mId) => {
+            Project.findOneAndUpdate({ projectId: user.projectId }, { $pull: { messages: { _id: mId } } })
+                .then(() => {
+                    const query = {
+                        mId: mId,
+                        user: user.userName,
+                    };
+                    io.to(user.projectId).emit("deleteMessage", query);
+                })
+        })
+
         // Download Code
         socket.on("download", ({ fName, admin }) => {
             fs.emptyDir("./public/downloads")
                 .then(() => {
-                    console.log("hello");
                     let filename = cuid.slug();
                     const path = `/downloads/${filename}`;
                     Project.findOne({ projectId: user.projectId })
@@ -1122,7 +1154,7 @@ io.on("connection", (socket) => {
                             // User already exists!
                             socket.emit("userNameExists", "Username already exists!");
                         }
-                        // Didn't change username
+                        // Didn't change username but changed other attributes
                         else {
                             User.findOneAndUpdate({ email: email }, update)
                                 .then((userInfo) => {
@@ -1131,32 +1163,13 @@ io.on("connection", (socket) => {
                                         Project.findOne({ projectId: item.project_id })
                                             .then((foundProject) => {
                                                 if (foundProject) {
-                                                    // Check if it's admin
-                                                    if (foundProject.admin === email) {
-                                                        foundProject.adminName = name;
-                                                    }
-
                                                     // Update in members array
                                                     let foundIndex = foundProject.members.findIndex(member => member.memberName === oldname);
                                                     foundProject.members[foundIndex].memberProfile = profile;
-                                                    foundProject.members[foundIndex].memberName = name;
+                                                    foundProject.save();
 
                                                     // Update in user array
                                                     updateUsers(user.id, profile, name);
-
-                                                    // Update in files array
-                                                    foundIndex = foundProject.files.findIndex(file => file.fileOwner === oldname);
-                                                    if (foundIndex >= 0) {
-                                                        foundProject.files[foundIndex].fileOwner = name;
-                                                    }
-
-                                                    // Update in messages array
-                                                    const chats = foundProject.messages.filter(message => message.userName === oldname);
-                                                    chats.forEach(chat => {
-                                                        chat.userName = name;
-                                                    });
-
-                                                    foundProject.save();
 
                                                     query = {
                                                         profile: profile,
@@ -1176,7 +1189,7 @@ io.on("connection", (socket) => {
                                 })
                         }
                     }
-                    // Changed username
+                    // Changed username and other attributes
                     else {
                         User.findOneAndUpdate({ email: email }, update)
                             .then((userInfo) => {
@@ -1199,10 +1212,11 @@ io.on("connection", (socket) => {
                                                 updateUsers(user.id, profile, name);
 
                                                 // Update in files array
-                                                foundIndex = foundProject.files.findIndex(file => file.fileOwner === oldname);
-                                                if (foundIndex >= 0) {
-                                                    foundProject.files[foundIndex].fileOwner = name;
-                                                }
+                                                const files = foundProject.files.filter(file => file.fileOwner === oldname);
+                                                files.forEach(file => {
+                                                    file.fileOwner = name;
+                                                });
+
                                                 // Update in messages array
                                                 const chats = foundProject.messages.filter(message => message.userName === oldname);
                                                 chats.forEach(chat => {

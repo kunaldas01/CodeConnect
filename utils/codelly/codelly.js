@@ -21,14 +21,12 @@ exports.init = function (option) {
 			exports.stats = true;
 		}
 	}
-	fs.exists('./temp', function (exists) {
-		if (!exists) {
-			if (exports.stats) {
-				console.log('INFO: '.cyan + 'temp directory created for storing temporary files.'.cyan)
-			}
-			fs.mkdirSync('./temp');
+	if (!fs.existsSync('./temp')) {
+		fs.mkdirSync('./temp');
+		if (exports.stats) {
+			console.log('INFO: '.cyan + 'temp directory created for storing temporary files.'.cyan)
 		}
-	});
+	}
 }
 
 exports.compileCPP = function (envData, code, fn) {

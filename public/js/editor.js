@@ -207,13 +207,25 @@ function outputFiles(files, pId) {
             div.appendChild(img);
 
             const button = document.createElement('button');
+            button.classList.add("fileBtn")
             button.setAttribute("id", `funm-${file.fileName}`);
             button.setAttribute("onclick", `openFile('${file.fileName}', '${pId}', '')`);
             button.innerHTML = `${file.fileName}&nbsp;<span>(${file.fileOwner})</span>`;
             div.appendChild(button);
 
+            const btn = document.createElement('button');
+            btn.classList.add("dfBtn");
+            if (file.fileOwner != document.querySelector("#user-name").value) {
+                btn.classList.add("disBtn");
+                btn.disabled = true;
+            }
+            btn.setAttribute("onclick", `deletefile("${file.fileName}")`);
+            btn.innerHTML = `<img src="/assets/images/bin.png" alt="delete">`;
+            div.appendChild(btn);
+
             document.querySelector(".memberFiles").appendChild(div);
         }
+        // If updated
         document.querySelector(`#funm-${file.fileName}`).innerHTML = `${file.fileName}&nbsp;<span>(${file.fileOwner})</span>`;
     })
 }
@@ -374,8 +386,15 @@ save.addEventListener("click", () => {
 })
 
 // File saved alert
-socket.on('filesaved', (message) => {
-    sendAlert(message);
+socket.on('filesaved', (details) => {
+    if (details.fileOwner === document.querySelector("#user-name").value) {
+        sendAlert('File saved successfully');
+    }
+    if (details.fileName === document.querySelector("#fileHeading").innerText) {
+        document.querySelector("#fileHeading").innerText = details.fileName;
+        langSelector.value = details.fileLang;
+        editor.setValue(`${details.fileContent}`);
+    }
 })
 
 const markCompleteForm = document.querySelector(".markCompleteForm");
@@ -631,8 +650,7 @@ document.querySelector("#runBtn").addEventListener("click", () => {
 
 // Show to output
 socket.on("outputData", (output) => {
-    console.log(output);
-    document.querySelector("#output").innerText = output;
+    document.querySelector("#output > code").innerText = output;
 })
 
 // Download code
@@ -804,6 +822,39 @@ socket.on("updateSuccess", (query) => {
     // Update main js
     document.querySelector("#user-profile").value = query.profile;
     document.querySelector("#user-name").value = query.name;
+})
+
+// Delete file
+function deletefile(fName) {
+    socket.emit("deleteFile", fName);
+}
+
+// Update after file is deleted
+socket.on("deleteFile", (query) => {
+    if (query.user === document.querySelector("#user-name").value) {
+        sendAlert("File deleted!");
+    }
+    document.getElementById(`nm-${query.fName}`).remove();
+
+    // Reset editor to default
+    document.querySelector("#fileHeading").innerText = document.querySelector("#project-title").innerText;
+    document.querySelector("#lang-selector").value = document.querySelector("#project-lang").value;
+    langSelector.disabled = true;
+    approve.classList.remove("visible");
+    reject.classList.remove("viible");
+    markComplete.classList.add("hidden");
+    save.classList.add("hidden");
+    editor.setOption('readOnly', true);
+})
+
+// Clear input
+document.querySelector("#clearInput").addEventListener("click", () => {
+    document.querySelector("#input").value = "";
+})
+
+// Clear output
+document.querySelector("#clearOutput").addEventListener("click", () => {
+    document.querySelector("#output").innerText = "";
 })
 
 // Alert
