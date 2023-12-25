@@ -6,42 +6,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Code Connect</title>
     <link rel="icon" type="image/x-icon" href="assets/images/programming.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/home.css" />
 </head>
 
 <body onload="deleteAllAlerts()">
     <header id="header" class="<%= headerVisibility %>">
         <nav class="nav-bar">
+            <div></div>
             <div class="left-section">
-                <h2 class="heading">Code Connect</h2>
+                <h1 class="heading">Code Connect</h1>
             </div>
 
             <div class="right-section">
-                <a href="/theme" class="theme-btn"><img src="assets/images/moon.png" alt="sun-moon" /></a>
+                <!-- <a href="/theme" class="theme-btn"><img src="assets/images/moon.png" alt="sun-moon" /></a> -->
                 <button class="profile-btn">
                     <img id="profile-btn" src="assets/images/avatars/<%= userDetails.profile %>.png"
                         alt="profile-picture">
                 </button>
             </div>
         </nav>
+        <div class="grad-strip"></div>
     </header>
     <main id="main-section" class="<%= mainVisibility %>">
         <div class="join-box">
-            <button id="createProject"><img src="assets/images/plus.png" alt="plus"> Create Project</button>
-            <button id="joinProject"><img src="assets/images/join.png" alt="join"> Join Project</button>
+            <button id="createProject"><i class="fa-solid fa-right-to-bracket"></i> Create Project</button>
+            <button id="joinProject"><i class="fa-solid fa-plus"></i> Join Project</button>
         </div>
         <div class="main-box">
             <% if(userDetails.projects.length!=0){ %>
+            <h2>Projects Joined</h2>
             <div class="content-box">
-                <h2>Projects Joined</h2>
                 <div class="project-list">
                     <% userDetails.projects.forEach((project)=>{ %>
 
                     <div class="project-box">
 
                         <a>
-                            <img class="project-menu" id="bt-<%= project.project_id %>" src="assets/images/dots.png"
-                                alt="dots" onclick="projectMenu('<%= project.project_id %>')">
+                            <i class="fa-solid fa-ellipsis-vertical project-menu" id="bt-<%= project.project_id %>"
+                                onclick="projectMenu('<%= project.project_id %>')"></i>
                         </a>
 
                         <div class="menu-items" id="pid-<%= project.project_id %>">
@@ -55,6 +60,7 @@
                             </button>
                         </div>
 
+                        <!-- Project Names -->
                         <a class="item" href="/main/<%= project.project_id %>?useremail=<%= userDetails.email %>">
                             <%= project.project_name %>
                         </a>
@@ -84,7 +90,7 @@
         </div>
         <div class="profile alterData">
             <a id="edit-profile">
-                <img src="assets/images/edit-profile.png" alt="edit-profile">EditProfile
+                <img src="assets/images/edit.png" alt="edit-profile">EditProfile
             </a>
             <a href="/">
                 <img src="assets/images/logout.png" alt="logout">Logout
@@ -170,13 +176,40 @@
             <div class="avatar-container" id="9" onclick="selectProfile(this.id)">
                 <img src="assets/images/avatars/9.png" alt="avatar9">
             </div>
+            <div class="avatar-container" id="1" onclick="selectProfile(this.id)">
+                <img src="assets/images/avatars/1.png" alt="avatar1">
+            </div>
+            <div class="avatar-container" id="2" onclick="selectProfile(this.id)">
+                <img src="assets/images/avatars/2.png" alt="avatar2">
+            </div>
+            <div class="avatar-container" id="3" onclick="selectProfile(this.id)">
+                <img src="assets/images/avatars/3.png" alt="avatar3">
+            </div>
+            <div class="avatar-container" id="4" onclick="selectProfile(this.id)">
+                <img src="assets/images/avatars/4.png" alt="avatar4">
+            </div>
+            <div class="avatar-container" id="5" onclick="selectProfile(this.id)">
+                <img src="assets/images/avatars/5.png" alt="avatar5">
+            </div>
+            <div class="avatar-container" id="6" onclick="selectProfile(this.id)">
+                <img src="assets/images/avatars/6.png" alt="avatar6">
+            </div>
+            <div class="avatar-container" id="7" onclick="selectProfile(this.id)">
+                <img src="assets/images/avatars/7.png" alt="avatar7">
+            </div>
+            <div class="avatar-container" id="8" onclick="selectProfile(this.id)">
+                <img src="assets/images/avatars/8.png" alt="avatar8">
+            </div>
+            <div class="avatar-container" id="9" onclick="selectProfile(this.id)">
+                <img src="assets/images/avatars/9.png" alt="avatar9">
+            </div>
         </div>
     </div>
 
     <!-- Create Project Window -->
     <div id="create-new" class="project-window <%= createFormVisibility %>">
         <div class="window-title">
-            <h2>Create Project</h2>
+            <h3>Create Project</h3>
         </div>
         <form action="/newProject" method="post">
             <p class="alertMessage createAlertMessage"><%= alertMessage %></p>
@@ -214,7 +247,7 @@
     <!-- Join Project Window -->
     <div id="join-exist" class="project-window <%= joinFormVisibility %>">
         <div class="window-title">
-            <h2>Join Project</h2>
+            <h3>Join Project</h3>
         </div>
         <form action="/joinProject" method="post">
             <p class="alertMessage joinAlertMessage"><%= alertMessage %></p>
@@ -286,6 +319,7 @@
     <!-- Project Exit or Delete Alert -->
     <p class="pedAlert"><%= alterProjectMessage %></p>
 
+    <script src="https://kit.fontawesome.com/e3cb1032f7.js" crossorigin="anonymous"></script>
     <script src="js/home.js"></script>
 </body>
 

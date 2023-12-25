@@ -4,11 +4,14 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/codemirror-5.65.15/lib/codemirror.css">
-    <link rel="stylesheet" href="/codemirror-5.65.15/theme/dracula.css">
-    <link rel="stylesheet" href="/css/main.css" />
     <title>Code Connect</title>
     <link rel="icon" type="image/x-icon" href="/assets/images/programming.png">
+    <link rel="stylesheet" href="/codemirror-5.65.15/lib/codemirror.css">
+    <link rel="stylesheet" href="/codemirror-5.65.15/theme/dracula.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/main.css" />
 </head>
 
 <body>
@@ -24,7 +27,17 @@
     <header class="header">
         <nav class="nav-bar">
             <div class="left-section">
-                <button class="sidebarBtn"><img src="/assets/images/menu.png" alt="menu"></button>
+                <div class="hamburger-container">
+                    <input type="checkbox" id="checkbox" class="checkbox visuallyHidden" checked>
+                    <label for="checkbox">
+                        <div id="hamberger" class="hamburger">
+                            <span class="bar bar1"></span>
+                            <span class="bar bar2"></span>
+                            <span class="bar bar3"></span>
+                            <span class="bar bar4"></span>
+                        </div>
+                    </label>
+                </div>
                 <div class="project-heading">
                     <img src="/assets/images/room.png" alt="room">
                     <h2 id="project-title"><%= projectDetails.projectName%></h2>
@@ -33,21 +46,23 @@
             <div>
                 <h2 id="heading">Code Connect</h2>
             </div>
+
             <div class="right-section">
-                <a href="/exitRoom/<%= userDetails.email %>" id="leave-btn" class="exit-btn"><img
-                        src="/assets/images/exit.png" alt="exit"> Leave
+                <a href="/exitRoom/<%= userDetails.email %>" id="leave-btn" class="exit-btn">
+                    <i class="fa-solid fa-door-open"></i> Leave
                     Room</a>
-                <a href="/theme" class="theme-btn"><img src="/assets/images/moon.png" alt="sun-moon" /></a>
+                <!-- <a href="/theme" class="theme-btn"><img src="/assets/images/moon.png" alt="sun-moon" /></a> -->
                 <button class="profile-btn"><img id="profile-btn"
                         src="/assets/images/avatars/<%= userDetails.profile %>.png" alt="profile-picture"></button>
             </div>
         </nav>
+        <div class="grad-strip"></div>
     </header>
     <main class="main-section">
         <!-- SideBar -->
         <div class="sidebar-menu">
             <button id="fileBtn"><img src="/assets/images/files.png" alt="files"></button>
-            <button id="peopleBtn"><img src="/assets/images/people.png" alt="people"></button>
+            <button id="peopleBtn"><img src="/assets/images/group.png" alt="people"></button>
             <button id="chatBtn" class="selected"><img src="/assets/images/chat.png" alt="chat"></button>
         </div>
         <div class="sidebar">
@@ -67,7 +82,7 @@
             <!-- Room Members  -->
             <div class="sidebar-contentII hidden" id="memberSection">
                 <div class="active-user">
-                    <img src="/assets/images/active-user.png" alt="active-user">
+                    <i class="fa-solid fa-user"></i>
                     <h2>Project Members</h2>
                 </div>
 
@@ -79,10 +94,10 @@
             <!-- Files -->
             <div class="sidebar-contentIII hidden" id="fileSection">
                 <div class="createSection">
-                    <button id="createFileBtn"><img src="/assets/images/add.png" alt="add"></button>
+                    <button id="createFileBtn"><i class="fa-solid fa-plus"></i></button>
                 </div>
                 <div class="adminSection">
-                    <img src="/assets/images/admin.png" alt="admin">
+                    <i class="fa-solid fa-lock"></i>
                     <button id="adminFile"
                         onclick="openFile('<%= projectDetails.projectName %>', '<%= projectDetails.projectId %>', 'admin')"><%= projectDetails.projectName %>&nbsp;<span>(<%= projectDetails.adminName %>)</span></button>
                 </div>
@@ -95,6 +110,9 @@
         <!-- Editor Section -->
         <div class="editorSection">
             <div class="editor-menu">
+                <div class="editor-mid-section">
+                    <h2 id="fileHeading"></h2>
+                </div>
                 <div class="editor-left-section">
                     <select name="lang-selector" id="lang-selector">
                         <option value="c">C</option>
@@ -106,18 +124,23 @@
                     <button class="reject realReject">Reject</button>
                     <button class="approve realApprove">Approve</button>
                 </div>
-                <div class="editor-mid-section">
-                    <h2 id="fileHeading"></h2>
-                </div>
                 <div class="editor-right-section">
-                    <button class="saveBtn"><img src="/assets/images/save.png" alt="save"></button>
-                    <button class="downloadBtn"><img src="/assets/images/download.png" alt="download"></button>
-                    <button class="runWindowBtn"><img src="/assets/images/play.png" alt="play"></button>
+                    <button class="saveBtn"><i class="fa-solid fa-floppy-disk"></i></button>
+                    <button class="downloadBtn"><i class="fa-solid fa-download"></i></button>
+                    <svg class="ham ham3 runWindowBtn active" viewBox="0 0 100 100">
+                        <path class="line top"
+                            d="m 70,33 h -40 c -11.092231,0 11.883874,13.496726 -3.420361,12.956839 -0.962502,-2.089471 -2.222071,-3.282996 -4.545687,-3.282996 -2.323616,0 -5.113897,2.622752 -5.113897,7.071068 0,4.448316 2.080609,7.007933 5.555839,7.007933 2.401943,0 2.96769,-1.283974 4.166879,-3.282995 2.209342,0.273823 4.031294,1.642466 5.857227,-0.252538 v -13.005715 16.288404 h 7.653568" />
+                        <path class="line middle"
+                            d="m 70,50 h -40 c -5.6862,0 -8.534259,5.373483 -8.534259,11.551069 0,7.187738 3.499166,10.922274 13.131984,10.922274 11.021777,0 7.022787,-15.773343 15.531095,-15.773343 3.268142,0 5.177031,-2.159429 5.177031,-6.7 0,-4.540571 -1.766442,-7.33533 -5.087851,-7.326157 -3.321409,0.0092 -5.771288,2.789632 -5.771288,7.326157 0,4.536525 2.478983,6.805271 5.771288,6.7" />
+                        <path class="line bottom"
+                            d="m 70,67 h -40 c 0,0 -3.680675,0.737051 -3.660714,-3.517857 0.02541,-5.415597 3.391687,-10.357143 10.982142,-10.357143 4.048418,0 17.88928,0.178572 23.482143,0.178572 0,2.563604 2.451177,3.403635 4.642857,3.392857 2.19168,-0.01078 4.373905,-1.369814 4.375,-3.392857 0.0011,-2.023043 -1.924401,-2.589191 -4.553571,-4.107143 -2.62917,-1.517952 -4.196429,-1.799562 -4.196429,-3.660714 0,-1.861153 2.442181,-3.118811 4.196429,-3.035715 1.754248,0.0831 4.375,0.890841 4.375,3.125 2.628634,0 6.160714,0.267857 6.160714,0.267857 l -0.178571,-2.946428 10.178571,0 -10.178571,0 v 6.696428 l 8.928571,0 -8.928571,0 v 7.142858 l 10.178571,0 -10.178571,0" />
+                    </svg>
                 </div>
             </div>
             <div class="textarea-container">
-                <textarea name="editor" id="editor" cols="1000"
-                    rows="1000"><%= projectDetails.projectContent %></textarea>
+                <textarea name="editor" id="editor">
+                    <%= projectDetails.projectContent %>
+                </textarea>
             </div>
         </div>
 
@@ -136,9 +159,7 @@
                     <p>Output</p>
                     <img id="clearOutput" src="/assets/images/bin.png" alt="clear output">
                 </div>
-                <!-- <p></p> -->
                 <pre id="output"><code></code></pre>
-                <!-- <textarea name="output" id="output" cols="30" rows="10" disabled></textarea> -->
             </div>
         </div>
     </main>
@@ -221,7 +242,7 @@
         </div>
         <div class="profile alterData">
             <a id="edit-profile">
-                <img src="/assets/images/edit-profile.png" alt="edit-profile">EditProfile
+                <img src="/assets/images/edit.png" alt="edit-profile">EditProfile
             </a>
             <a href="/">
                 <img src="/assets/images/logout.png" alt="logout">Logout
@@ -330,6 +351,9 @@
 
     <!-- Addons -->
     <script src="/codemirror-5.65.15/addon/edit/closebrackets.js"></script>
+
+    <!-- Font Awesome -->
+    <script src="/js/fA.js" crossorigin="anonymous"></script>
 
     <!-- Native -->
     <script src="/js/main.js"></script>

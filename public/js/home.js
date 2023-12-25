@@ -21,8 +21,6 @@ let confirmText = "";
 let activeBtn = "";
 let activeMenu = "";
 
-
-
 // Open Profile Menu
 document.querySelector(".profile-btn").addEventListener("click", () => {
     profileDropdown.classList.toggle("hidden");
@@ -50,7 +48,7 @@ document.querySelector("#close-edit").addEventListener("click", () => {
     document.querySelector(".updateUserAlertMessage").innerText = "";
 })
 
-// Show Profile Menu
+// Open Profile Menu
 document.querySelector(".profile-selector-btn").addEventListener("click", () => {
     profileMenu.classList.add("show");
 })
@@ -62,14 +60,18 @@ document.addEventListener("click", (e) => {
     }
 });
 
-// Show Avatar Menu
+// Open Avatar Menu
 document.querySelector("#chooseProfile").addEventListener("click", () => {
     chooseAvatar.classList.add("showAvatar");
+    editForm.classList.add("zindex-200");
+    editForm.classList.add("blur");
 });
 
-// Hide Avatar Menu
+// Close Avatar Menu
 document.querySelector("#closeBtn").addEventListener("click", () => {
     chooseAvatar.classList.remove("showAvatar");
+    editForm.classList.remove("zindex-200");
+    editForm.classList.remove("blur");
 })
 
 // Choose Profile
@@ -77,6 +79,8 @@ function selectProfile(id) {
     profileFrame.src = `assets/images/avatars/${id}.png`;
     profileInput.value = id;
     chooseAvatar.classList.remove("showAvatar");
+    editForm.classList.remove("zindex-200");
+    editForm.classList.remove("blur");
 }
 
 // Set default avatar

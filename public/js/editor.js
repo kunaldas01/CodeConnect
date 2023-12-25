@@ -42,20 +42,39 @@ const sidebarEl = document.querySelector(".sidebar");
 const files = document.querySelector("#fileSection");
 const user = document.querySelector("#memberSection");
 const message = document.querySelector("#message");
-
-document.querySelector(".sidebarBtn").addEventListener("click", () => {
-    sidebarEl.classList.toggle("hide-sidebar");
-    // document.querySelector(".editorSection").classList.toggle("clickedE");
-});
+const checkBox = document.querySelector("#checkbox");
 
 // Sidebar Menu
 const fileBtn = document.querySelector("#fileBtn");
 const peopleBtn = document.querySelector("#peopleBtn");
 const chatBtn = document.querySelector("#chatBtn");
 
+checkBox.addEventListener("change", () => {
+    if (checkBox.checked) {
+        sidebarEl.classList.remove("hide-sidebar");
+
+        if (!message.classList.contains("hidden")) {
+            chatBtn.classList.add("selected");
+        }
+        else if (!files.classList.contains("hidden")) {
+            fileBtn.classList.add("selected");
+        }
+        else if (!user.classList.contains("hidden")) {
+            peopleBtn.classList.add("selected");
+        }
+    }
+    else {
+        sidebarEl.classList.add("hide-sidebar");
+        peopleBtn.classList.remove("selected");
+        fileBtn.classList.remove("selected");
+        chatBtn.classList.remove("selected");
+    }
+})
+
 // User list section
 peopleBtn.addEventListener("click", () => {
     if (sidebarEl.classList.contains("hide-sidebar")) {
+        checkBox.checked = true;
         sidebarEl.classList.remove("hide-sidebar");
     }
 
@@ -66,38 +85,38 @@ peopleBtn.addEventListener("click", () => {
         message.classList.add("hidden");
     }
 
-    peopleBtn.classList.add("selected")
-    fileBtn.classList.remove("selected")
-    chatBtn.classList.remove("selected")
+    peopleBtn.classList.add("selected");
+    fileBtn.classList.remove("selected");
+    chatBtn.classList.remove("selected");
 })
 
 // Message Section
 chatBtn.addEventListener("click", () => {
     if (sidebarEl.classList.contains("hide-sidebar")) {
+        checkBox.checked = true;
         sidebarEl.classList.remove("hide-sidebar");
     }
 
     if (message.classList.contains("hidden")) {
         message.classList.remove("hidden");
-
         files.classList.add("hidden")
         user.classList.add("hidden");
     }
 
-    chatBtn.classList.add("selected")
-    peopleBtn.classList.remove("selected")
-    fileBtn.classList.remove("selected")
+    chatBtn.classList.add("selected");
+    peopleBtn.classList.remove("selected");
+    fileBtn.classList.remove("selected");
 })
 
 // Files Section
 fileBtn.addEventListener("click", () => {
     if (sidebarEl.classList.contains("hide-sidebar")) {
+        checkBox.checked = true;
         sidebarEl.classList.remove("hide-sidebar");
     }
 
     if (files.classList.contains("hidden")) {
         files.classList.remove("hidden")
-
         message.classList.add("hidden");
         user.classList.add("hidden");
     }
@@ -635,6 +654,8 @@ socket.on("approveStatus", (data) => {
 const runWindow = document.querySelector(".runWindow");
 document.querySelector(".runWindowBtn").addEventListener("click", () => {
     runWindow.classList.toggle("hide-runWindow");
+    document.querySelector(".runWindowBtn").classList.toggle('active');
+    document.querySelector(".editor-right-section").style.marginRight = "30px";
 })
 
 // Compile code

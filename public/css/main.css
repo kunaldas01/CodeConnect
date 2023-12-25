@@ -1,24 +1,32 @@
-@import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
-
-/* :root {
-	--dark-color-a: #667aff;
-	--dark-color-b: #7386ff;
-	--light-color: #e6e9ff;
-	--success-color: #5cb85c;
-	--error-color: #d9534f;
-} */
+:root {
+	--nav-color: #252525;
+	--primary-color: #25262b;
+	--secondary-color: #252525;
+	/* rgb(76, 76, 76) */
+}
 
 * {
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
+	font-family: 'Poppins', sans-serif;
+	scroll-behavior: smooth;
+}
+
+::-webkit-scrollbar-track {
+	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+	background-color: var(--primary-color);
+	margin-bottom: 17px;
+
 }
 
 ::-webkit-scrollbar {
-	background: #252525;
+	width: 12px;
+	background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
+	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
 	background-color: #4b4b4b;
 }
 
@@ -27,7 +35,6 @@
 }
 
 body {
-	height: 100vh;
 	width: 100vw;
 	font-family: 'Roboto', sans-serif;
 	font-size: 16px;
@@ -35,43 +42,130 @@ body {
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	position: relative;
-	overflow: hidden;
+	position: fixed;
 }
 
 header {
-	height: 60px;
+	height: 6vh;
 	width: 100%;
 }
 
 .nav-bar {
-	height: 100%;
-	padding: 10px 40px 10px 20px;
-	background-color: #4158D0;
-	background-image: linear-gradient(43deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%);
+	height: 95%;
+	width: 100%;
+	padding: 5px 15px;
+	background-color: var(--nav-color);
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 	gap: 10px;
 }
 
-.left-section {
+.nav-bar>div {
 	height: 100%;
+	flex: 1;
+}
+
+.left-section {
 	display: flex;
 	justify-content: flex-start;
 	align-items: center;
 	gap: 30px;
 }
 
-.sidebarBtn {
-	height: 80%;
-	padding: 0;
-	border: none;
-	background: none;
+/* HAMBURGER */
+.visuallyHidden {
+	opacity: 0;
 }
 
-.project-heading {
+.hamburger-container {
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	z-index: 100;
+	position: relative;
+}
+
+.checkbox {
+	position: absolute;
+	left: 0;
+	height: 70px;
+	width: 70px;
+	z-index: 200;
+	cursor: pointer;
+}
+
+.checkbox+label {
+	height: 20px;
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+}
+
+.hamburger {
+	position: relative;
+	width: 30px;
 	height: 100%;
+}
+
+.hamburger .bar {
+	width: 30px;
+	height: 4px;
+	background-color: whitesmoke;
+	display: block;
+	border-radius: 4px;
+	transition: all 0.4s ease-in-out;
+	position: absolute;
+}
+
+.hamburger-container:hover .hamburger .bar {
+	background-color: #339DFF;
+}
+
+.bar1 {
+	top: 0;
+}
+
+.bar2,
+.bar3 {
+	top: 8px;
+}
+
+.bar3 {
+	right: 0;
+}
+
+.bar4 {
+	bottom: 0;
+}
+
+/* HAMBURGER ANIMATION */
+.checkbox:checked+label>.hamburger>.bar1 {
+	transform: rotate(45deg);
+	transform-origin: 5%;
+	width: 26px
+}
+
+.checkbox:checked+label>.hamburger>.bar2 {
+	transform: translateX(-40px);
+	background-color: transparent;
+}
+
+.checkbox:checked+label>.hamburger>.bar3 {
+	transform: translateX(40px);
+	background-color: transparent;
+}
+
+.checkbox:checked+label>.hamburger>.bar4 {
+	transform-origin: 5%;
+	transform: rotate(-45deg);
+	width: 26px;
+}
+
+/* ##################################################################################################### */
+
+.project-heading {
+	height: 80%;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -79,30 +173,34 @@ header {
 	background-color: #272727;
 	padding: 5px;
 	border-radius: 5px;
-	border: 1px solid whitesmoke;
+	box-shadow: 0 0 5px gray;
 }
 
 #project-title {
-	font-size: 1.7rem;
+	font-size: 1.5rem;
 	font-weight: 600;
 	color: whitesmoke;
 }
 
 #heading {
 	font-size: 1.7rem;
+	font-weight: 800;
+	text-transform: uppercase;
 	color: whitesmoke;
+	text-shadow: 0 0 4px rgba(83, 100, 255);
+	text-align: center;
 }
 
 .right-section {
-	height: 100%;
 	display: flex;
-	justify-content: center;
+	justify-content: flex-end;
 	align-items: center;
 	gap: 20px;
+	padding-right: 5px;
 }
 
 .exit-btn {
-	height: 90%;
+	height: 70%;
 	cursor: pointer;
 	padding: 5px 15px;
 	background: rgb(230, 73, 73);
@@ -119,25 +217,43 @@ header {
 
 .exit-btn:hover {
 	background-color: rgb(249, 5, 5);
-	box-shadow: 0 0 10px whitesmoke;
-}
-
-.theme-btn {
-	height: 90%;
+	box-shadow: 0 0 5px whitesmoke;
 }
 
 .profile-btn {
-	height: 90%;
+	height: 95%;
 	padding: 0;
 	border: none;
 	background: none;
 }
 
+/* Gradient Strip */
+.grad-strip {
+	height: 3px;
+	width: 100%;
+	background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+	background-size: 400% 400%;
+	animation: gradient 10s ease infinite;
+}
+
+@keyframes gradient {
+	0% {
+		background-position: 0% 50%;
+	}
+
+	50% {
+		background-position: 100% 50%;
+	}
+
+	100% {
+		background-position: 0% 50%;
+	}
+}
 
 /* ****************************************************************************************************** */
 /* Main Section */
 .main-section {
-	flex: 1;
+	height: 90vh;
 	width: 100%;
 	display: flex;
 	justify-content: flex-start;
@@ -148,33 +264,35 @@ header {
 .sidebar-menu {
 	width: 3.5rem;
 	height: 100%;
-	background-color: #252525;
+	background-color: var(--nav-color);
 	display: flex;
 	flex-direction: column;
 	justify-content: flex-start;
 	align-items: center;
 	z-index: 10;
+	border-right: 1px solid rgb(76, 76, 76);
 }
 
 .sidebar-menu button {
 	height: 70px;
 	width: 100%;
-	padding: 10px;
-	padding: 10px;
+	padding: 15px 10px;
 	border: none;
 	background: none;
 }
 
 .sidebar-menu button img {
-	height: 80%;
+	height: 90%;
 }
 
 .selected {
-	background: #606060 !important;
+	background-color: rgb(23, 23, 28) !important;
+	border-left: 3px solid rgb(76, 76, 249) !important;
 }
 
 /* Sidebar */
 .sidebar {
+	height: 100%;
 	width: 20%;
 	display: flex;
 	position: relative;
@@ -189,12 +307,13 @@ header {
 .sidebar-content {
 	height: 100%;
 	width: 100%;
-	background-color: rgb(47, 47, 47);
+	background-color: var(--primary-color);
 	position: absolute;
 	top: 0;
 	left: 0;
 	display: flex;
 	flex-direction: column;
+	border-right: 1px solid rgb(76, 76, 76);
 }
 
 /* Chat Section */
@@ -214,7 +333,7 @@ header {
 }
 
 .chat-messages .message .meta {
-	font-size: 15px;
+	font-size: 16px;
 	font-weight: bold;
 	color: #7386ff;
 	opacity: 0.7;
@@ -226,17 +345,24 @@ header {
 }
 
 .text {
-	font-size: 1.3rem;
+	color: rgb(75, 75, 75);
+	font-size: 1.1rem;
+	font-weight: 500;
 }
 
 .chat-messages .message button {
 	border: none;
 	background: none;
-	height: 15px;
-	width: 15px;
+	height: 20px;
+	width: 20px;
 	position: absolute;
 	top: 7px;
 	right: 7px;
+	border-radius: 50%;
+}
+
+.chat-messages .message button:hover {
+	box-shadow: 0 0 8px red;
 }
 
 .chat-form-container {
@@ -275,11 +401,16 @@ header {
 	border: 0;
 }
 
+.sendChatBtn:hover {
+	background-color: #afb9ff;
+	box-shadow: 0 0 10px 0 #3498db inset, 0 0 10px 4px #3498db;
+}
+
 /* User List Section */
 .sidebar-contentII {
 	height: 100%;
 	width: 100%;
-	background-color: rgb(47, 47, 47);
+	background-color: var(--primary-color);
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -292,22 +423,23 @@ header {
 	color: whitesmoke;
 	overflow-y: auto;
 	overflow-x: hidden;
+	border-right: 1px solid rgb(76, 76, 76);
 }
 
 .active-user {
 	width: 90%;
-	height: 70px;
+	height: 60px;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	background-color: #4b4b4b;
 	border-radius: 20px;
 	padding: 10px;
-	gap: 10px;
+	gap: 20px;
 }
 
-.active-user img {
-	height: 50px;
+.active-user i {
+	transform: scale(1.5);
 }
 
 .projectMembers {
@@ -317,22 +449,17 @@ header {
 .memberList {
 	height: 100%;
 	width: 100%;
-	display: flex;
-	justify-content: flex-start;
-	align-items: flex-start;
-	flex-wrap: wrap;
-	gap: 10px;
 	padding: 10px;
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
 }
 
 .member {
-	height: 120px;
-	width: 30%;
 	display: flex;
 	flex-direction: column;
-	justify-content: flex-start;
+	justify-content: center;
 	align-items: center;
-	gap: 5px;
+	gap: 10px;
 	padding: 10px;
 	position: relative;
 }
@@ -343,12 +470,13 @@ header {
 }
 
 .active img {
-	border: 5px solid rgb(0, 255, 0);
+	border: 2px solid whitesmoke;
+	box-shadow: 0 0 10px 0 #3498db inset, 0 0 10px 4px #3498db;
 }
 
 
 .member p {
-	font-size: 17px;
+	font-size: 15px;
 }
 
 .memberEmail {
@@ -363,6 +491,7 @@ header {
 }
 
 .member:hover .memberEmail {
+	z-index: 200;
 	visibility: visible;
 }
 
@@ -370,7 +499,7 @@ header {
 .sidebar-contentIII {
 	height: 100%;
 	width: 100%;
-	background-color: rgb(47, 47, 47);
+	background-color: var(--primary-color);
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -380,17 +509,19 @@ header {
 	align-items: center;
 	color: whitesmoke;
 	overflow-y: auto;
+	border-right: 1px solid rgb(76, 76, 76);
 }
 
 .createSection {
-	height: 40px;
+	height: 50px;
 	width: 100%;
-	background-color: #1d1d1d;
+	background-color: var(--secondary-color);
 	padding: 5px;
 	display: flex;
 	justify-content: flex-end;
 	align-items: center;
 	margin-bottom: 10px;
+	border-bottom: 1px solid rgb(76, 76, 76);
 }
 
 #createFileBtn {
@@ -401,10 +532,16 @@ header {
 	justify-content: center;
 	align-items: center;
 	border-radius: 5px;
+	margin: 15px;
 }
 
-#createFileBtn:hover {
-	background-color: #7a7a7a;
+#createFileBtn i {
+	transform: scale(2.2);
+	color: whitesmoke;
+}
+
+#createFileBtn:hover i {
+	color: #339DFF;
 }
 
 .adminSection {
@@ -419,10 +556,6 @@ header {
 	margin-bottom: 10px;
 }
 
-.adminSection img {
-	height: 90%;
-}
-
 #adminFile {
 	border: none;
 	background: none;
@@ -432,7 +565,8 @@ header {
 	display: flex;
 	justify-content: flex-start;
 	align-items: center;
-	font-size: 17px;
+	font-size: 15px;
+	font-weight: 500;
 }
 
 .adminSection:hover {
@@ -466,7 +600,7 @@ header {
 }
 
 .file img {
-	height: 70%;
+	height: 65%;
 }
 
 .file button {
@@ -478,6 +612,8 @@ header {
 	display: flex;
 	justify-content: flex-start;
 	align-items: center;
+	font-size: 15px;
+	font-weight: 500;
 }
 
 .selectedFile {
@@ -485,7 +621,7 @@ header {
 }
 
 .dfBtn {
-	height: 100%;
+	height: 70%;
 	width: 35px !important;
 	display: flex;
 	justify-content: center;
@@ -493,13 +629,17 @@ header {
 }
 
 .dfBtn img {
-	height: 60%;
+	border-radius: 50%;
+	height: 50%;
+}
+
+.dfBtn img:hover {
+	border: 1px solid whitesmoke;
 }
 
 .disBtn img {
-	opacity: 0.3;
+	display: none;
 }
-
 
 /* Create File Form */
 .createFileForm {
@@ -515,7 +655,7 @@ header {
 }
 
 .createTop {
-	height: 50px;
+	height: 60px;
 	width: 100%;
 	display: flex;
 	justify-content: space-between;
@@ -527,7 +667,6 @@ header {
 }
 
 .createTop h2 {
-	margin-top: 10px;
 	color: whitesmoke;
 	font-size: 27px;
 }
@@ -540,7 +679,7 @@ header {
 }
 
 #closeCreateFile img {
-	height: 100%;
+	height: 80%;
 	border-radius: 50%;
 }
 
@@ -611,23 +750,29 @@ header {
 }
 
 .createBtn {
-	height: 40px;
+	height: 45px;
 	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 #createFile {
 	height: 100%;
 	width: 100%;
 	border: none;
-	background-color: #5cb85c;
+	background-color: #339DFF;
 	color: white;
 	font-size: large;
 	font-weight: 600;
 	padding: 10px;
+	border-radius: 5px;
 }
 
 #createFile:hover {
-	background: #43de43;
+	background: #fff;
+	color: #339DFF;
+	box-shadow: 0 4px 4px rgba(83, 100, 255, 0.549);
 }
 
 /* ********************************************************* */
@@ -638,13 +783,15 @@ header {
 }
 
 .editor-menu {
-	height: 60px;
+	height: 7%;
 	width: 100%;
-	background-color: #252525;
+	background-color: var(--nav-color);
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	padding: 10px;
+	gap: 20px;
+	padding: 10px 20px;
+	border-bottom: 1px solid rgb(76, 76, 76);
 }
 
 .editor-left-section {
@@ -661,7 +808,10 @@ header {
 	height: 80%;
 	width: 100px;
 	font-size: 15px;
+	font-weight: 500;
 	border-radius: 5px;
+	color: whitesmoke;
+	background-color: rgb(65, 65, 65);
 }
 
 .markComplete {
@@ -743,14 +893,13 @@ header {
 
 .editor-mid-section {
 	height: 100%;
-	width: 25%;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	border-radius: 5px;
 	background-color: #1d1d1d;
 	padding: 5px;
-	border: 2px solid whitesmoke;
+	box-shadow: 0 0 5px gray;
 }
 
 #fileHeading {
@@ -765,22 +914,24 @@ header {
 	display: flex;
 	justify-content: flex-end;
 	align-items: center;
-	gap: 10px;
+	gap: 25px;
 }
 
 .saveBtn {
-	height: 80%;
+	height: 100%;
+	padding: 5px 10px;
 	border-radius: 5px;
 	border: none;
 	background: none;
 }
 
-.saveBtn img {
-	height: 100%;
+.saveBtn i {
+	transform: scale(2.2);
+	color: whitesmoke;
 }
 
-.saveBtn img:hover {
-	box-shadow: 0 0 10px whitesmoke;
+.saveBtn:hover i {
+	color: #339DFF;
 }
 
 .downloadBtn {
@@ -790,38 +941,74 @@ header {
 	background: none;
 }
 
-.downloadBtn img {
-	height: 100%;
-}
-
-.downloadBtn img:hover {
-	box-shadow: 0 0 10px whitesmoke;
-}
-
-.runWindowBtn {
-	height: 80%;
-	width: 60px;
-	border-radius: 5px;
-	border: none;
-	background-color: #4158D0;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	padding: 5px;
+.downloadBtn i {
+	transform: scale(2);
 	color: whitesmoke;
 }
 
-.runWindowBtn:hover {
-	border: 1px solid whitesmoke;
-	background-color: #002afc;
+.downloadBtn:hover i {
+	color: #339DFF;
 }
 
-.runWindowBtn img {
-	height: 80%;
+/* ######################################################################################################################################### */
+
+.ham {
+	height: 40px;
+	cursor: pointer;
+	transform: scale(1.6);
+	-webkit-tap-highlight-color: transparent;
+	transition: transform 400ms;
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	position: fixed;
+	right: 30px;
+	z-index: 300;
 }
+
+.line {
+	fill: none;
+	transition: stroke-dasharray 400ms, stroke-dashoffset 400ms;
+	stroke: whitesmoke;
+	stroke-width: 5.5;
+	stroke-linecap: round;
+}
+
+.ham3 .top {
+	stroke-dasharray: 40 130;
+}
+
+.ham3 .middle {
+	stroke-dasharray: 40 140;
+}
+
+.ham3 .bottom {
+	stroke-dasharray: 40 205;
+}
+
+.ham3.active .top {
+	stroke-dasharray: 75 130;
+	stroke-dashoffset: -63px;
+}
+
+.ham3.active .middle {
+	stroke-dashoffset: -102px;
+}
+
+.ham3.active .bottom {
+	stroke-dasharray: 110 205;
+	stroke-dashoffset: -86px;
+}
+
+.ham:hover .line {
+	stroke: #339DFF;
+}
+
+/* ######################################################################################################################################### */
 
 .textarea-container {
-	height: 85vh;
+	height: 93%;
 }
 
 /* Mark Complete Form */
@@ -872,21 +1059,25 @@ header {
 }
 
 #cancel-complete {
-	background-color: whitesmoke;
-	color: #252525;
+	color: #339DFF;
+	background: #fff;
 }
 
 #confirm-complete {
-	background-color: rgb(234, 88, 88);
-	color: whitesmoke;
+	background-color: #339DFF;
+	color: white;
 }
 
 #confirm-complete:hover {
-	background-color: red;
+	color: #339DFF;
+	background: #fff;
+	box-shadow: 0 4px 4px rgba(83, 100, 255, 0.549);
 }
 
 #cancel-complete:hover {
-	background-color: gray;
+	background: #fff;
+	color: #339DFF;
+	box-shadow: 0 4px 4px rgba(83, 100, 255, 0.549);
 }
 
 /* Reject Form */
@@ -937,21 +1128,24 @@ header {
 }
 
 #cancel-reject {
-	background-color: whitesmoke;
-	color: #252525;
+	color: #339DFF;
+	background: #fff;
 }
 
 #confirm-reject {
-	background-color: #5cb85c;
+	background-color: rgb(234, 88, 88);
 	color: whitesmoke;
 }
 
 #confirm-reject:hover {
-	background-color: #43de43;
+	background-color: red;
+	box-shadow: 0 4px 4px rgba(83, 100, 255, 0.549);
 }
 
 #cancel-reject:hover {
-	background-color: gray;
+	background: #fff;
+	color: #339DFF;
+	box-shadow: 0 4px 4px rgba(83, 100, 255, 0.549);
 }
 
 /* Approve Form */
@@ -988,33 +1182,38 @@ header {
 }
 
 #cancel-approve {
-	background-color: whitesmoke;
-	color: #252525;
+	color: #339DFF;
+	background: #fff;
 }
 
 #confirm-approve {
-	background-color: #5cb85c;
-	color: whitesmoke;
+	background-color: #339DFF;
+	color: white;
 }
 
 #confirm-approve:hover {
-	background-color: #43de43;
+	color: #339DFF;
+	background: #fff;
+	box-shadow: 0 4px 4px rgba(83, 100, 255, 0.549);
 }
 
 #cancel-approve:hover {
-	background-color: gray;
+	background: #fff;
+	color: #339DFF;
+	box-shadow: 0 4px 4px rgba(83, 100, 255, 0.549);
 }
 
 /* Code run window */
 .runWindow {
 	height: 100%;
 	width: 20%;
-	background-color: #252525;
+	background-color: var(--primary-color);
 	display: flex;
 	flex-direction: column;
 	gap: 20px;
-	padding: 20px;
+	padding: 10px 20px;
 	position: relative;
+	border-left: 1px solid rgb(76, 76, 76);
 	transition: all 0.5s ease-out;
 }
 
@@ -1026,17 +1225,25 @@ header {
 #runBtn {
 	height: 40px;
 	width: 150px;
-	background-color: #5cb85c;
-	color: whitesmoke;
 	border: none;
 	border-radius: 5px;
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	font-size: 17px;
+	font-weight: 600;
+
+	border: 1px solid rgb(161, 161, 161);
+	color: #fff;
+	box-shadow: 0 0 40px 40px #57aefb inset, 0 0 0 0 #339DFF;
+	-webkit-transition: all 150ms ease-in-out;
+	transition: all 150ms ease-in-out;
 }
 
 #runBtn:hover {
-	border: 1px solid whitesmoke;
+	border: none;
+	background-color: transparent;
+	box-shadow: 0 0 10px 0 #3498db inset, 0 0 10px 4px #3498db;
 }
 
 .inputSection {
@@ -1075,11 +1282,15 @@ header {
 	height: 100%;
 	width: 100%;
 	border-radius: 10px;
-	background-color: rgb(26, 26, 26);
+	background-color: var(--secondary-color);
 	color: whitesmoke;
-	border: 1px solid whitesmoke;
+	border: 1px solid rgb(102, 102, 102);
 	font-size: 16px;
 	padding: 10px;
+}
+
+#input:selected {
+	border: 1px solid whitesmoke;
 }
 
 .outputSection {
@@ -1118,11 +1329,11 @@ header {
 	height: 100%;
 	width: 100%;
 	color: whitesmoke;
-	background-color: rgb(26, 26, 26);
+	background-color: var(--secondary-color);
 	font-size: 16px;
-	padding: 5px;
+	padding: 20px;
 	border-radius: 10px;
-	border: 1px solid whitesmoke;
+	border: 1px solid rgb(102, 102, 102);
 	overflow: auto;
 }
 
@@ -1199,7 +1410,6 @@ header {
 	z-index: -10;
 	opacity: 0;
 	position: absolute;
-	height: 520px;
 	width: 400px;
 	background-color: #2e2e2e;
 	border-radius: 10px;
@@ -1216,7 +1426,7 @@ header {
 }
 
 #close-edit {
-	height: 100%;
+	height: 80%;
 	border-radius: 50%;
 }
 
@@ -1312,7 +1522,7 @@ header {
 
 .profile-menu {
 	height: 70px;
-	width: 120px;
+	width: 150px;
 	position: absolute;
 	top: 15%;
 	left: 50%;
@@ -1331,6 +1541,7 @@ header {
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	border-radius: 5px;
 }
 
 #defaultProfile {
@@ -1345,15 +1556,18 @@ header {
 	margin-top: 20px;
 	width: 100%;
 	height: 40px;
-	background-color: #5cb85c;
+	background-color: #339DFF;
 	color: white;
 	font-size: large;
 	font-weight: 600;
 	border: 0;
+	border-radius: 5px;
 }
 
 .save-btn:hover {
-	background: #43de43;
+	color: #339DFF;
+	background: #fff;
+	box-shadow: 0 4px 4px rgba(83, 100, 255, 0.549);
 }
 
 /* Avatar Form */
@@ -1373,14 +1587,14 @@ header {
 
 .top-section {
 	height: 10%;
-	padding: 10px;
+	padding: 15px;
 	display: flex;
 	justify-content: flex-end;
 	align-items: center;
 }
 
 .top-section img {
-	height: 90%;
+	height: 100%;
 	border-radius: 50%;
 	cursor: pointer;
 	transition: all 0.3s ease-out;
@@ -1420,20 +1634,18 @@ header {
 .pedAlert {
 	z-index: -100;
 	opacity: 0;
+	height: 45px;
 	position: absolute;
 	top: 10px;
-	height: 45px;
-	padding: 5px;
-	background-color: rgb(249, 255, 249);
-	color: rgb(0, 229, 0);
 	padding: 10px;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	font-size: 18px;
 	font-weight: 600;
-	border: 2px solid gray;
-	box-shadow: 0 0 15px whitesmoke;
+	color: #fff;
+	background-color: rgb(72, 72, 72);
+	box-shadow: 0 0 10px 0 #3498db, 0 0 10px 4px #3498db;
 	border-radius: 5px;
 }
 
@@ -1454,7 +1666,7 @@ header {
 /* ************************************************************************************************* */
 
 .hidden {
-	visibility: hidden;
+	opacity: 0;
 	z-index: -1;
 }
 
@@ -1502,10 +1714,14 @@ img {
 /* Footer */
 footer {
 	width: 100%;
-	background-color: #252525;
+	height: 4vh;
+	padding: 5px;
+	background-color: var(--nav-color);
 	color: white;
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	z-index: 300;
+	border-top: 1px solid rgb(76, 76, 76);
+	font-size: 15px;
+	font-weight: 600;
 }
