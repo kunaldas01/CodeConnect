@@ -134,6 +134,7 @@ input[type="password"] {
     align-items: center;
     position: relative;
     cursor: pointer;
+    overflow: hidden;
 }
 
 #defaultUser {
@@ -143,7 +144,7 @@ input[type="password"] {
 }
 
 #photo-camera {
-    height: 30%;
+    transform: scale(1.5);
     position: absolute;
     opacity: 0;
     transition: all 0.5s ease-out;
@@ -281,7 +282,7 @@ input[type="password"] {
     height: 100px;
     width: 100px;
     border-radius: 50%;
-    background-color: pink;
+    overflow: hidden;
 }
 
 .avatar-container img {

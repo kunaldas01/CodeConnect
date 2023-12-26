@@ -9,7 +9,6 @@
     padding: 0;
     box-sizing: border-box;
     font-family: 'Poppins', sans-serif;
-    scroll-behavior: smooth;
 }
 
 ::-webkit-scrollbar-track {
@@ -113,6 +112,8 @@ h3 {
     border: none;
     background: none;
     cursor: pointer;
+    border-radius: 50%;
+    overflow: hidden;
 }
 
 img {
@@ -338,6 +339,8 @@ main {
 
 .userData img {
     height: 55%;
+    border-radius: 50%;
+    overflow: hidden;
 }
 
 .userData p {
@@ -471,6 +474,7 @@ main {
     align-items: center;
     position: relative;
     cursor: pointer;
+    overflow: hidden;
 }
 
 #defaultUser {
@@ -480,7 +484,7 @@ main {
 }
 
 #photo-camera {
-    height: 30%;
+    transform: scale(1.5);
     position: absolute;
     opacity: 0;
     transition: all 0.5s ease-out;
@@ -597,6 +601,7 @@ main {
     height: 100px;
     width: 100px;
     border-radius: 50%;
+    overflow: hidden;
 }
 
 .avatar-container img {

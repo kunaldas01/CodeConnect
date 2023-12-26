@@ -454,9 +454,13 @@ app.post("/newProject", (req, res) => {
     const pName = req.body.pName;
     const lang = req.body.pLang;
 
-    Project.findOne({ projectId: pId })
+    Project.findOne({
+        $or: [
+            { projectName: pName },
+            { projectId: pId }]
+    })
         .then((foundProject) => {
-            // Project Already Exists
+            // Project Name or ID Already Exists
             if (foundProject) {
                 const query = querystring.stringify({
                     userEmail: currEmail,

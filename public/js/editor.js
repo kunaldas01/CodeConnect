@@ -229,7 +229,7 @@ function outputFiles(files, pId) {
             button.classList.add("fileBtn")
             button.setAttribute("id", `funm-${file.fileName}`);
             button.setAttribute("onclick", `openFile('${file.fileName}', '${pId}', '')`);
-            button.innerHTML = `${file.fileName}&nbsp;<span>(${file.fileOwner})</span>`;
+            button.innerHTML = `${file.fileName}.${file.fileLang}&nbsp;<span>(${file.fileOwner})</span>`;
             div.appendChild(button);
 
             const btn = document.createElement('button');
@@ -245,7 +245,7 @@ function outputFiles(files, pId) {
             document.querySelector(".memberFiles").appendChild(div);
         }
         // If updated
-        document.querySelector(`#funm-${file.fileName}`).innerHTML = `${file.fileName}&nbsp;<span>(${file.fileOwner})</span>`;
+        document.querySelector(`#funm-${file.fileName}`).innerHTML = `${file.fileName}.${file.fileLang}&nbsp;<span>(${file.fileOwner})</span>`;
     })
 }
 
@@ -655,7 +655,12 @@ const runWindow = document.querySelector(".runWindow");
 document.querySelector(".runWindowBtn").addEventListener("click", () => {
     runWindow.classList.toggle("hide-runWindow");
     document.querySelector(".runWindowBtn").classList.toggle('active');
-    document.querySelector(".editor-right-section").style.marginRight = "30px";
+    if (runWindow.classList.contains("hide-runWindow")) {
+        document.querySelector(".editor-right-section").style.marginRight = "30px";
+    }
+    else {
+        document.querySelector(".editor-right-section").style.marginRight = "0";
+    }
 })
 
 // Compile code
